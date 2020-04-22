@@ -1,6 +1,8 @@
 import feedparser as fp
-
-from flask import Flask
+'''
+render_template: render jinja template and produce pure html
+'''
+from flask import Flask, render_template
 app = Flask(__name__)
 
 RssFeed = {'bbc':'http://feeds.bbci.co.uk/news/rss.xml',
@@ -20,19 +22,16 @@ RssFeed = {'bbc':'http://feeds.bbci.co.uk/news/rss.xml',
 @app.route("/<feedname>")
 # Any variables specified by the
 #decorator must be accounted for in our function's definition
-def get_news(feedname ="bbc"):
+def get_news(feedname ="cnn"):
     feed = fp.parse(RssFeed[feedname])
-    firstArticle = feed.entries[0]
-    return f"""
-           <html>
-                    <body>
-                        <h1> BBC Headlines </h1>
-                        <b>{firstArticle.title}</b> 
-                        <i>{firstArticle.published}<i><br/>
-                        <p>{firstArticle.summary}</p><br/>     
-                    </body>
-            </html>
-             """      
+    # firstArticle = feed.entries[0]
+    
+    # return render_template("home.html",
+    #                         title = firstArticle.title, 
+    #                         published = firstArticle.published,
+    #                         summary = firstArticle.summary  )   
+    return render_template("home.html", 
+                            articles = feed.entries)
    
 if __name__ == "__main__":
     app.run(port=5000, debug = True)    
