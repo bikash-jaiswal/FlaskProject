@@ -10,15 +10,17 @@ RssFeed = {'bbc':'http://feeds.bbci.co.uk/news/rss.xml',
 #for root
 @app.route('/')
 #for bbc location
-@app.route('/bbc')
-def bbc():
-    return get_news('bbc')
+# @app.route('/bbc')
+# def bbc():
+#     return get_news('bbc')
 
-@app.route('/cnn')
-def cnn():
-    return get_news('cnn')
-
-def get_news(feedname):
+# @app.route('/cnn')
+# def cnn():
+#     return get_news('cnn')
+@app.route("/<feedname>")
+# Any variables specified by the
+#decorator must be accounted for in our function's definition
+def get_news(feedname ="bbc"):
     feed = fp.parse(RssFeed[feedname])
     firstArticle = feed.entries[0]
     return f"""
